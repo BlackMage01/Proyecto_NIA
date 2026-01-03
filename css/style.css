@@ -22,11 +22,11 @@ body {
     }
 
     .content {
-        order: 1; /* Artículos primero en celular */
+        order: 2; /* Artículos primero en celular */
     }
 
     .sidebar {
-        order: 2; /* Barra lateral es segundo en celular */
+        order: 1; /* Barra lateral es segundo en celular */
     }
 }
 
