@@ -62,7 +62,7 @@ def scrape_article(target_url):
             if target_url == Reuters_url:
                 try:
                     title = GoogleTranslator(source='auto', target='es').translate(title)
-                    print(f"Translated title: {title}")  # Debug: Print translated title
+                    print(f"Translated title: {title}")  # Debug: Muestra articulos con titulo traducido
                 except Exception as e:
                     print(f"Translation failed for {title}: {e}")
                     #En caso de fallo usa el título original
@@ -70,10 +70,9 @@ def scrape_article(target_url):
             
             #Modifica pubDate a la fecha en español.
             pub_date_full = entry.published if hasattr(entry, 'published') else entry.get('pubDate', '')
-            if pub_date_full:
+            if pub_date_full and hasattr(entry, 'published_parsed'):
                 try:
                     pub_date = datetime.strptime(pub_date_full, "%a, %d %b %Y %H:%M:%S %Z")
-
                     day_abbr = pub_date.strftime("%a")
                     month_abbr = pub_date.strftime("%b")
                     
@@ -87,7 +86,7 @@ def scrape_article(target_url):
                         "link": entry.link,
                         "source": source_names.get(target_url, "Unknown"), #Extraer nombre de fuente de la url
                         "date": trans_pub_date, #Fecha y hora de publicación traducida (es)
-                        "datetime_sort": pub_date
+                        "datetime": pub_date
                     })   
                 except ValueError as e:
                     print(f"Error parsing date for entry: {e}")
@@ -102,7 +101,7 @@ def scrape_article(target_url):
                         "datetime": pub_date
                     })
             else:
-                # In case of emergency, pull back to direct scrape.
+                # En caso de emergencia tomar todo literal (potencialmente falible)
                 pub_date = datetime.now()
                 translated_pub_date = pub_date.strftime("%Y-%m-%d %H:%M")
                 show_list.append({
@@ -133,6 +132,9 @@ def actualizar_html(articulos_frescos, html_file="index.html"):
         print("Error: No se ha encontrado un tag de tipo <ul> en el archivo.")
         return
     
+    # Sección para categorizar artículos
+    articulos_frescos.sort(key=lambda x: x["datetime"], reverse=False)
+
     # Sección para evitar duplicados
     links_existentes = {li.find("a")["href"] for li in ul.find_all("li") if li.find("a")}
 
@@ -152,10 +154,11 @@ def actualizar_html(articulos_frescos, html_file="index.html"):
     print(f"Updated {html_file} successfully!")
 
 if __name__ == "__main__":
-    if __name__ == "__main__":
-        show_list = []
-        for url in scrap_list:
-            entries = scrape_article(url)  # Pass the URL
-            if entries:  # Check if entries is not None
-                show_list.extend(entries)
-        actualizar_html(show_list)
+    show_list = []
+    for url in scrap_list:
+        entries = scrape_article(url)  # Pass the URL
+        if entries:  # Check if entries is not None
+            show_list.extend(entries)
+    show_list.sort(key=lambda x: x["datetime"],reverse=False)
+
+    actualizar_html(show_list)
