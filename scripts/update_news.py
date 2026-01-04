@@ -8,8 +8,8 @@ from datetime import datetime
 # Feeds de interés: 
 ''' Specific RSS urls (these are the equivalent to an XML made link) '''
 
-AP_news_url = "https://news.google.com/rss/search?q=https%3A%2F%2Fapnews.com%2Fnoticias&hl=es-419&gl=US&ceid=US%3Aes-419" #AP news google news funnel
-Reuters_url = "https://news.google.com/rss/search?q=latin%20america%20site%3Ahttps%3A%2F%2Fwww.reuters.com%2Fworld%2Famericas&hl=es-419&gl=US&ceid=US%3Aes-419" #Reuters Americas - Needs translation - google news funnel
+Reuters_url = "https://rss.app/feeds/RH96AVcrcfv7o3g3.xml" #Reuters RSS.app link - Needs translation
+AP_news_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vcX1O51y8g7.rss" #AP news - Fetch RSS 
 Inforbae_url = "https://news.google.com/rss/search?q=site%3Ahttps%3A%2F%2Fwww.infobae.com%2Famerica&hl=es-419&gl=US&ceid=US%3Aes-419" # Infobae google news funnel
 
 scrap_list = [AP_news_url,Reuters_url,Inforbae_url]
@@ -145,7 +145,7 @@ def actualizar_html(articulos_frescos, html_file="index.html"):
             a.string = entry["title"]
             li.append(a)
             #Añade fuente y fecha
-            li.append(f" - {entry['date']}")
+            li.append(f" - {entry['source']} | {entry['date']}")
             ul.insert(0,li)
             links_existentes.add(entry["link"])
     with open(html_file, "w", encoding="utf-8") as file:

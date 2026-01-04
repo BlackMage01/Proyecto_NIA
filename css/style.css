@@ -16,28 +16,32 @@ body {
     margin-bottom: 1%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1080px) {
     .container {
         flex-direction: column; /* Stack sidebar and content vertically */
     }
 
     .content {
-        order: 2; /* Artículos segunda en celular */
+        order: 1; /* Artículos segunda en celular */
+        width: 100%;
     }
 
     .sidebar {
-        order: 1; /* Barra lateral es primera en celular */
+        order: 2; /* Barra lateral es primera en celular */
+        margin-left: 50%;
+        width: fit-content;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1080px) {
     .content, .sidebar {
         width: 100%;
         box-sizing: border-box;
     }
 
     .sidebar {
-        margin-top: 20px; /* Add some space between content and sidebar */
+        margin-left: 1%;
+        margin-top: 10px; /* Add some space between content and sidebar */
     }
 }
 
