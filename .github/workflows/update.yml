@@ -21,7 +21,7 @@ jobs:
         run: pip install feedparser beautifulsoup4 deep-translator
 
       - name: Run script
-        run: python update_news.py
+        run: python scripts/update_news.py
 
       - name: Commit and push changes
         run: |
