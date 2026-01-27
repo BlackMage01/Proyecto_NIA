@@ -8,12 +8,12 @@ from datetime import datetime
 # Feeds de interés: 
 ''' Specific RSS urls (these are the equivalent to an XML made link) '''
 
-Reuters_url = "https://rss.app/feeds/RH96AVcrcfv7o3g3.xml" #Reuters RSS.app link - Needs translation
+skynews_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkbXg1qT7cJ.rss" #Reuters RSS.app link - Needs translation
 AP_news_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vcX1O51y8g7.rss" #AP news - Fetch RSS 
 efe_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkZSa06Y78M.rss" #efe.com - Fetch RSS
 Inforbae_url = "https://news.google.com/rss/search?q=site%3Ahttps%3A%2F%2Fwww.infobae.com%2Famerica&hl=es-419&gl=US&ceid=US%3Aes-419" # Infobae google news funnel
 
-scrap_list = [AP_news_url,Reuters_url,Inforbae_url]
+scrap_list = [AP_news_url,skynews_url,Inforbae_url,efe_url]
 
 #Genera una lista de diccionarios y cada elemento funciona como una pieza individual de un html.
 def scrape_article(target_url):
@@ -29,7 +29,7 @@ def scrape_article(target_url):
 
         source_names = {
             AP_news_url: "AP News",
-            Reuters_url: "Reuters",
+            skynews_url: "Sky News",
             Inforbae_url: "Infobae",
             efe_url: "efe.com"
         }
@@ -61,7 +61,7 @@ def scrape_article(target_url):
 
         for entry in feed.entries[:10]:
             title = entry.title #Busca especificamente artículos de reuters
-            if target_url == Reuters_url:
+            if target_url == skynews_url:
                 try:
                     title = GoogleTranslator(source='auto', target='es').translate(title)
                     print(f"Translated title: {title}")  # Debug: Muestra articulos con titulo traducido
