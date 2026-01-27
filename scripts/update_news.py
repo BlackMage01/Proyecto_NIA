@@ -10,6 +10,7 @@ from datetime import datetime
 
 Reuters_url = "https://rss.app/feeds/RH96AVcrcfv7o3g3.xml" #Reuters RSS.app link - Needs translation
 AP_news_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vcX1O51y8g7.rss" #AP news - Fetch RSS 
+efe_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkZSa06Y78M.rss" #efe.com - Fetch RSS
 Inforbae_url = "https://news.google.com/rss/search?q=site%3Ahttps%3A%2F%2Fwww.infobae.com%2Famerica&hl=es-419&gl=US&ceid=US%3Aes-419" # Infobae google news funnel
 
 scrap_list = [AP_news_url,Reuters_url,Inforbae_url]
@@ -29,7 +30,8 @@ def scrape_article(target_url):
         source_names = {
             AP_news_url: "AP News",
             Reuters_url: "Reuters",
-            Inforbae_url: "Infobae"
+            Inforbae_url: "Infobae",
+            efe_url: "efe.com"
         }
 
         day_names = {
