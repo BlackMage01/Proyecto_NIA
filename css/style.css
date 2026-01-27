@@ -16,25 +16,31 @@ body {
     margin-bottom: 1%;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 630px) {
     
-    .container {
-        flex-direction: column; /* Stack sidebar and content vertically */
+    .main{
+        display: flex;
+        flex-direction: column;
     }
 
     .content {
-        order: 1; /* Artículos segunda en celular */
+        order: 1; /* Artículos primero en celular */
         width: 100%;
     }
 
     .sidebar {
-        order: 2; /* Barra lateral es primera en celular */
+        order: 2; /* Barra lateral es segunda en celular */
         margin-left: 50%;
-        width: fit-content;
+        width: 100%;
     }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 768px) {
+
+    .container{
+        display: grid;
+    }
+
     .content, .sidebar {
         width: 100%;
         box-sizing: border-box;
