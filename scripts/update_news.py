@@ -8,7 +8,7 @@ from datetime import datetime
 # Feeds de interés: 
 ''' Specific RSS urls (these are the equivalent to an XML made link) '''
 
-skynews_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkbXg1qT7cJ.rss" #Reuters RSS.app link - Needs translation
+skynews_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkbXg1qT7cJ.rss" #Sky news - Fetch RSS
 AP_news_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vcX1O51y8g7.rss" #AP news - Fetch RSS 
 efe_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkZSa06Y78M.rss" #efe.com - Fetch RSS
 Inforbae_url = "https://news.google.com/rss/search?q=site%3Ahttps%3A%2F%2Fwww.infobae.com%2Famerica&hl=es-419&gl=US&ceid=US%3Aes-419" # Infobae google news funnel
@@ -60,60 +60,56 @@ def scrape_article(target_url):
         }
 
         for entry in feed.entries[:10]:
-            title = entry.title #Busca especificamente artículos de reuters
+            title = entry.title
             if target_url == skynews_url:
                 try:
                     title = GoogleTranslator(source='auto', target='es').translate(title)
-                    print(f"Translated title: {title}")  # Debug: Muestra articulos con titulo traducido
+                    print(f"Translated title: {title}")
                 except Exception as e:
                     print(f"Translation failed for {title}: {e}")
-                    #En caso de fallo usa el título original
-                    pass
-            
-            #Modifica pubDate a la fecha en español.
-            pub_date_full = entry.published if hasattr(entry, 'published') else entry.get('pubDate', '')
-            if pub_date_full and hasattr(entry, 'published_parsed'):
-                try:
-                    pub_date = datetime.strptime(pub_date_full, "%a, %d %b %Y %H:%M:%S %Z")
-                    day_abbr = pub_date.strftime("%a")
-                    month_abbr = pub_date.strftime("%b")
-                    
-                    trans_day = day_names.get(day_abbr, day_abbr)
-                    trans_month = month_names.get(month_abbr, month_abbr)
 
-                    trans_pub_date = f"{trans_day}, {pub_date.day} {trans_month} {pub_date.year} {pub_date.strftime('%H:%M')}"
-                    
-                    show_list.append({
-                        "title": title,
-                        "link": entry.link,
-                        "source": source_names.get(target_url, "Unknown"), #Extraer nombre de fuente de la url
-                        "date": trans_pub_date, #Fecha y hora de publicación traducida (es)
-                        "datetime": pub_date
-                    })   
-                except ValueError as e:
-                    print(f"Error parsing date for entry: {e}")
-                    # Fallback to current date if parsing fails
-                    pub_date = datetime.now()
-                    translated_pub_date = pub_date.strftime("%Y-%m-%d %H:%M")
-                    show_list.append({
-                        "title": title,
-                        "link": entry.link,
-                        "source": source_names.get(target_url, "Unknown"),
-                        "date": translated_pub_date,
-                        "datetime": pub_date
-                    })
-            else:
-                # En caso de emergencia tomar todo literal (potencialmente falible)
-                pub_date = datetime.now()
-                translated_pub_date = pub_date.strftime("%Y-%m-%d %H:%M")
+            # Parse and reformat the date
+            pub_date_str = entry.published if hasattr(entry, 'published') else entry.get('pubDate', '')
+            if pub_date_str:
+                try:
+                    # Try parsing the date in the standard RSS format
+                    pub_date = datetime.strptime(pub_date_str, "%a, %d %b %Y %H:%M:%S %Z")
+                except ValueError:
+                    try:
+                        # Try parsing the date in the format "2026-01-27 05:33"
+                        pub_date = datetime.strptime(pub_date_str, "%Y-%m-%d %H:%M")
+                    except ValueError:
+                        # Fallback to current date if parsing fails
+                        pub_date = datetime.now()
+
+                # Format the date in the desired format
+                day_abbr = pub_date.strftime("%a")
+                month_abbr = pub_date.strftime("%b")
+
+                trans_day = day_names.get(day_abbr, day_abbr)
+                trans_month = month_names.get(month_abbr, month_abbr)
+
+                trans_pub_date = f"{trans_day}, {pub_date.day} {trans_month} {pub_date.year} {pub_date.strftime('%H:%M')}"
+
                 show_list.append({
                     "title": title,
                     "link": entry.link,
                     "source": source_names.get(target_url, "Unknown"),
-                    "date": translated_pub_date,
+                    "date": trans_pub_date,
                     "datetime": pub_date
                 })
-        return show_list  # Return the list of articles
+            else:
+                # Fallback to current date if pubDate is missing
+                pub_date = datetime.now()
+                trans_pub_date = f"{day_names.get(pub_date.strftime('%a'))}, {pub_date.day} {month_names.get(pub_date.strftime('%b'))} {pub_date.year} {pub_date.strftime('%H:%M')}"
+                show_list.append({
+                    "title": title,
+                    "link": entry.link,
+                    "source": source_names.get(target_url, "Unknown"),
+                    "date": trans_pub_date,
+                    "datetime": pub_date
+                })
+        return show_list
 
     except Exception as e:
         print(f"Error scraping {target_url}: {e}")
