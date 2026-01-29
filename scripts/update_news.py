@@ -68,19 +68,8 @@ def scrape_article(target_url):
                 except Exception as e:
                     print(f"Translation failed for {title}: {e}")
 
-            # Parse and reformat the date
-            pub_date_str = entry.published if hasattr(entry, 'published') else entry.get('pubDate', '')
-            if pub_date_str:
-                try:
-                    # Try parsing the date in the standard RSS format
-                    pub_date = datetime.strptime(pub_date_str, "%a, %d %b %Y %H:%M:%S %Z")
-                except ValueError:
-                    try:
-                        # Try parsing the date in the format "2026-01-27 05:33"
-                        pub_date = datetime.strptime(pub_date_str, "%Y-%m-%d %H:%M")
-                    except ValueError:
-                        # Fallback to current date if parsing fails
-                        pub_date = datetime.now()
+            if hasattr(entry, 'published_parsed'):
+                pub_date = datetime(*entry.published_parsed[:6]) #tupla es convertida en datetime
 
                 # Format the date in the desired format
                 day_abbr = pub_date.strftime("%a")
