@@ -60,6 +60,7 @@ def scrape_article(target_url):
         }
 
         for entry in feed.entries[:10]:
+            print(f"Original pubDate:")
             title = entry.title
             if target_url == skynews_url:
                 try:
@@ -146,6 +147,21 @@ if __name__ == "__main__":
         entries = scrape_article(url)  # Pass the URL
         if entries:  # Check if entries is not None
             show_list.extend(entries)
+
+    #Sort por versión más reciente:
     show_list.sort(key=lambda x: x["datetime"],reverse=False)
+
+    #Remove duplicates
+    unique_articles = {}
+    for article in show_list:
+        title = article["title"]
+    if title not in unique_articles:
+        unique_articles[title] = article
+
+    #Convert from dictionary values back to list
+    unique_articles_list = list(unique_articles.values())
+
+    #Sort the unique articles again by datetime, newest first
+    unique_articles_list.sort(key=lambda x: x["datetime"], reverse=True)
 
     actualizar_html(show_list)
