@@ -1,8 +1,10 @@
 import feedparser
 import datetime
+import panda as pd
 from bs4 import BeautifulSoup
 from deep_translator import GoogleTranslator
 from datetime import datetime
+import os
 
 
 # Feeds de interés: 
@@ -29,7 +31,6 @@ def scrape_article(target_url):
         source_names = {
             AP_news_url: "AP News",
             skynews_url: "Sky News",
-            Inforbae_url: "Infobae",
             efe_url: "efe.com"
         }
 
@@ -140,6 +141,25 @@ def actualizar_html(articulos_frescos, html_file="index.html"):
 
     print(f"Updated {html_file} successfully!")
 
+def generar_excel_mensual(articles):
+    df = pd.DataFrame(articles)
+
+    #Extraer mes y año en base a datetime
+    df['Month'] = df['datetime'].dt.strftime('%Y-%m')
+
+    #Agrupar en base a mes
+    grouped = df.groupby('Month')
+
+    #Crear un directorio con los documentos
+    os.makedirs('excel_files', exist_ok=True)
+
+    #Guarda cada mes de artículos como un excel separado
+    for month, group in grouped:
+        filename = f"excel_files/articulos_{month}.xlsx"
+        group.to_excel(filename, index=False, engine='openpyxl')
+        print(f"Saved {filename}")
+        print("Todos los archivos Excel fueron guardados satisfactoriamente.")
+
 if __name__ == "__main__":
     show_list = []
     for url in scrap_list:
@@ -163,6 +183,4 @@ if __name__ == "__main__":
     #Sort the unique articles again by datetime, newest first
     unique_articles_list.sort(key=lambda x: x["datetime"], reverse=True)
 
-
     actualizar_html(show_list)
-
