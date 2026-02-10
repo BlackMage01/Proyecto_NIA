@@ -10,9 +10,9 @@ import os
 # Feeds de interés: 
 ''' Specific RSS urls (these are the equivalent to an XML made link) '''
 
-skynews_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkbXg1qT7cJ.rss" #Sky news - Fetch RSS
-AP_news_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vcX1O51y8g7.rss" #AP news - Fetch RSS 
-efe_url = "https://fetchrss.com/feed/1vcX6N3ZM7Ax1vkZSa06Y78M.rss" #efe.com - Fetch RSS
+skynews_url = "https://fetchrss.com/feed/1vpvj09EO6yp1vpvlS0X78OI.rss" #Sky news - Fetch RSS
+AP_news_url = "https://fetchrss.com/feed/1vpvj09EO6yp1vpvrU8PE3Dm.rss" #AP news - Fetch RSS 
+efe_url = "https://fetchrss.com/feed/1vpvj09EO6yp1vpvx0GdBF74.rss" #efe.com - Fetch RSS
 
 scrap_list = [AP_news_url,skynews_url,efe_url]
 
@@ -62,7 +62,7 @@ def scrape_article(target_url):
         for entry in feed.entries[:50]:
             print(f"Original pubDate:")
             title = entry.title
-            if target_url == skynews_url:
+            if target_url == skynews_url or AP_news_url:
                 try:
                     title = GoogleTranslator(source='auto', target='es').translate(title)
                     print(f"Translated title: {title}")
@@ -185,4 +185,5 @@ if __name__ == "__main__":
 
 
     actualizar_html(show_list)
+
 
