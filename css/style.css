@@ -90,6 +90,14 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
+
+.registro-pubs * {
+    margin-left: 2%;
+    margin-bottom: 2%;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
 .content {
     background-color: #a1bece;
     width:fit-content;

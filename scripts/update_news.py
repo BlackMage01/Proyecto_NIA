@@ -1,6 +1,5 @@
 import feedparser
 import datetime
-import pandas as pd
 from bs4 import BeautifulSoup
 from deep_translator import GoogleTranslator
 from datetime import datetime
@@ -142,24 +141,6 @@ def actualizar_html(articulos_frescos, html_file="index.html"):
 
     print(f"Updated {html_file} successfully!")
 
-def generar_excel_mensual(articles):
-    df = pd.DataFrame(articles)
-
-    #Extraer mes y año en base a datetime
-    df['Month'] = df['datetime'].dt.strftime('%Y-%m')
-
-    #Agrupar en base a mes
-    grouped = df.groupby('Month')
-
-    #Crear un directorio con los documentos
-    os.makedirs('excel_files', exist_ok=True)
-
-    #Guarda cada mes de artículos como un excel separado
-    for month, group in grouped:
-        filename = f"excel_files/articulos_{month}.xlsx"
-        group.to_excel(filename, index=False, engine='openpyxl')
-        print(f"Saved {filename}")
-        print("Todos los archivos Excel fueron guardados satisfactoriamente.")
 
 if __name__ == "__main__":
     show_list = []
@@ -185,23 +166,3 @@ if __name__ == "__main__":
     unique_articles_list.sort(key=lambda x: x["datetime"], reverse=True)
 
     actualizar_html(show_list)
-
-def reset_html_list(html_file='index.html'):
-    try:
-        with open(html_file, 'r', encoding='utf=8') as file:
-            soup = BeautifulSoup(file.read(), "html.parser")
-    except FileNotFoundError:
-        print(f"Error: {html_file} not found")
-        return
-    ul = soup.find("ul")
-    if ul:
-        ul.clear() #No li within ul past this point
-    else:
-        ul = soup.new_tag("ul")
-        content_div = soup.find("div", class_="content")
-        if content_div:
-            content_div.append(ul)
-    
-    with open(html_file, "w", encoding="utf-8") as file:
-        file.write(str(soup))
-        
