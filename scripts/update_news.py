@@ -1,6 +1,6 @@
 import feedparser
 import datetime
-import panda as pd
+import pandas as pd
 from bs4 import BeautifulSoup
 from deep_translator import GoogleTranslator
 from datetime import datetime
@@ -182,5 +182,6 @@ if __name__ == "__main__":
 
     #Sort the unique articles again by datetime, newest first
     unique_articles_list.sort(key=lambda x: x["datetime"], reverse=True)
+
 
     actualizar_html(show_list)
