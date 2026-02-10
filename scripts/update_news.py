@@ -59,7 +59,7 @@ def scrape_article(target_url):
             "Dec": "Dec",
         }
 
-        for entry in feed.entries[:10]:
+        for entry in feed.entries[:50]:
             print(f"Original pubDate:")
             title = entry.title
             if target_url == skynews_url:
@@ -185,3 +185,4 @@ if __name__ == "__main__":
 
 
     actualizar_html(show_list)
+
