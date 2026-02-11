@@ -2,7 +2,7 @@ name: Update News
 
 on:
   schedule:
-    - cron: '60 * * * *'  # Runs every hour
+    - cron: '59 * * * *'  # Runs every hour
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
