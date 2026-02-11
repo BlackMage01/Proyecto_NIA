@@ -2,7 +2,7 @@ name: Update News
 
 on:
   schedule:
-    - cron: '*/60 * * * *'  # Runs every hour
+    - cron: '60 * * * *'  # Runs every hour
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -27,6 +27,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git branch -u origin/master
           git add .
           git commit -m "Updated news links"
           git push
