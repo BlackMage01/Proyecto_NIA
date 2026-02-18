@@ -10,9 +10,9 @@ import subprocess
 # Feeds de interés: 
 ''' Specific RSS urls (these are the equivalent to an XML made link) '''
 
-skynews_url = "https://fetchrss.com/feed/1vpvj09EO6yp1vpvlS0X78OI.rss" #Sky news - Fetch RSS
-AP_news_url = "https://fetchrss.com/feed/1vpvj09EO6yp1vpvrU8PE3Dm.rss" #AP news - Fetch RSS 
-efe_url = "https://fetchrss.com/feed/1vpvj09EO6yp1vpvx0GdBF74.rss" #efe.com - Fetch RSS
+skynews_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqAd19Y5o3.rss" #Sky news - Fetch RSS
+AP_news_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqCpAAZ5RK.rss" #AP news - Fetch RSS 
+efe_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqFLBgZGbi.rss" #efe.com - Fetch RSS
 
 scrap_list = [AP_news_url,skynews_url,efe_url]
 
@@ -164,5 +164,6 @@ if __name__ == "__main__":
 
     #Sort the unique articles again by datetime, newest first
     unique_articles_list.sort(key=lambda x: x["datetime"], reverse=True)
+
 
     actualizar_html(show_list)
