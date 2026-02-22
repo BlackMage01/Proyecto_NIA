@@ -10,10 +10,11 @@ import subprocess
 # Feeds de interés: 
 ''' Specific RSS urls (these are the equivalent to an XML made link) '''
 
-skynews_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqAd19Y5o3.rss" #Sky news - Fetch RSS
-AP_news_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqCpAAZ5RK.rss" #AP news - Fetch RSS 
+skynews_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqAd19Y5o3.rss" #Sky news - Fetch RSS (en)
+AP_news_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqCpAAZ5RK.rss" #AP news - Fetch RSS (en)
 efe_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqFLBgZGbi.rss" #efe.com - Fetch RSS
 cnnES_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vuDy7Dug9zA.rss" #cnn en español - rssapp
+reuters_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vuEPg0hPCKw.rss" #reuters - rssapp (en)
 
 scrap_list = [AP_news_url,skynews_url,efe_url, cnnES_url]
 
@@ -63,7 +64,7 @@ def scrape_article(target_url):
         for entry in feed.entries[:50]:
             print(f"Original pubDate:")
             title = entry.title
-            if target_url == skynews_url or AP_news_url:
+            if target_url == skynews_url or AP_news_url or reuters_url:
                 try:
                     title = GoogleTranslator(source='auto', target='es').translate(title)
                     print(f"Translated title: {title}")
@@ -168,4 +169,5 @@ if __name__ == "__main__":
 
 
     actualizar_html(show_list)
+
 
