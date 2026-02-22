@@ -13,8 +13,9 @@ import subprocess
 skynews_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqAd19Y5o3.rss" #Sky news - Fetch RSS
 AP_news_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqCpAAZ5RK.rss" #AP news - Fetch RSS 
 efe_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vsqFLBgZGbi.rss" #efe.com - Fetch RSS
+cnnES_url = "https://fetchrss.com/feed/1vsowS3gZ38s1vuDy7Dug9zA.rss" #cnn en español - rssapp
 
-scrap_list = [AP_news_url,skynews_url,efe_url]
+scrap_list = [AP_news_url,skynews_url,efe_url, cnnES_url]
 
 #Genera una lista de diccionarios y cada elemento funciona como una pieza individual de un html.
 def scrape_article(target_url):
@@ -167,3 +168,4 @@ if __name__ == "__main__":
 
 
     actualizar_html(show_list)
+
